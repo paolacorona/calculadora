@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Módulos Institucionales</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2em 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      box-sizing: border-box;
+    }
+    .contenedor {
+      max-width: 500px;
+      width: 100%;
+      background-color: #ffffff;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      background-color: #153244;
+      color: #8de2d6;
+      padding: 1em;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2em;
+    }
+    label, input, button {
+      display: block;
+      margin: 1em 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #resultado {
+      font-weight: bold;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <header>
+      <h1>Calculadora de módulos: DEM - 2025</h1>
+    </header>
+
+    <label for="modulosSemana">Cantidad de módulos por semana:</label>
+    <input type="number" id="modulosSemana" min="0" step="1">
+
+    <label for="fechaInicio">Fecha de inicio:</label>
+    <input type="date" id="fechaInicio">
+
+    <label for="fechaFin">Fecha de fin:</label>
+    <input type="date" id="fechaFin">
+
+    <button onclick="calcularModulos()">Calcular</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function calcularModulos() {
+      const modulosSemana = parseFloat(document.getElementById("modulosSemana").value);
+      const fechaInicio = new Date(document.getElementById("fechaInicio").value);
+      const fechaFin = new Date(document.getElementById("fechaFin").value);
+
+      if (isNaN(modulosSemana) || isNaN(fechaInicio.getTime()) || isNaN(fechaFin.getTime())) {
+        document.getElementById("resultado").textContent = "Por favor completá todos los campos con valores válidos.";
+        return;
+      }
+
+      if (fechaFin < fechaInicio) {
+        document.getElementById("resultado").textContent = "La fecha de fin debe ser posterior a la fecha de inicio.";
+        return;
+      }
+
+      const unDiaMs = 24 * 60 * 60 * 1000;
+      const cantidadDias = Math.round((fechaFin - fechaInicio) / unDiaMs);
+      const modulosTotales = modulosSemana * (cantidadDias / 30);
+
+      document.getElementById("resultado").textContent = `Total de módulos institucionales: ${modulosTotales.toFixed(2)} (sobre un período de ${cantidadDias} días)`;
+    }
+  </script>
+</body>
+</html>
